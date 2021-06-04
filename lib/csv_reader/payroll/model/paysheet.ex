@@ -2,6 +2,8 @@ defmodule CsvReader.Model.Paysheet do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @timestamps_opts [type: :utc_datetime]
+
   alias CsvReader.Model.BatchBlock
 
   @states ["ACTIVE", "DELETED", "REPROCESS"]
