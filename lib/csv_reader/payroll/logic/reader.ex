@@ -6,8 +6,10 @@ defmodule CsvReader.Logic.Reader do
     Read file from a specific path and get all registers
 
     ## Example
+
     iex> Reader.read_file("./files/2020EneroTest.xlsx")
-    []
+
+    [%Paysheet{}, %Paysheet{}, %Paysheet{}, %Paysheet{}]
   """
   def read_file(path) do
     {:ok, file} = path
