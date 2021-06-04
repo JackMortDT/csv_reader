@@ -3,7 +3,6 @@ defmodule CsvReaderWeb.ScanController do
 
   def index(conn, _params) do
     options = File.ls!("./files/")
-    IO.inspect options
     conn
     |> assign(:options, options)
     |> render("index.html")
@@ -11,6 +10,6 @@ defmodule CsvReaderWeb.ScanController do
 
   def export_file(conn, params) do
     conn
-    |> render("export.xlsx", %{params: params})
+    |> render("export.xlsx", %{file: params["file"]})
   end
 end

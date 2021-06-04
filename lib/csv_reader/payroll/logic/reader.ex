@@ -18,6 +18,8 @@ defmodule CsvReader.Logic.Reader do
     file |> Xlsxir.get_list()
     |> Enum.map(&list_to_map/1)
     |> List.flatten()
+    |> create_update_query()
+    |> add_query_to_file()
   end
 
   defp list_to_map(list) do
@@ -73,7 +75,7 @@ defmodule CsvReader.Logic.Reader do
   end
 
   defp get_paysheets(params) do
-    Payroll.get_paysheet_by_params(params)
+    Payroll.get_paysheet_by_params(params)    
   end
 
   defp float_to_binary(number) when is_float(number) do
@@ -86,4 +88,13 @@ defmodule CsvReader.Logic.Reader do
     string
   end
 
+  defp create_update_query(paysheet_list) do
+    Enum.map(paysheet_list, fn paysheet ->
+      "UPDATE paysheet SET status = 'ACTIVE' WHERE ID = #{paysheet.id};"
+    end)
+  end
+
+  defp add_query_to_file(query) do
+    File.write("./files/updates.sql", "#{query} \n", [:append])
+  end
 end
