@@ -12,7 +12,9 @@ defmodule CsvReader.Logic.Reader do
   def read_file(path) do
     {:ok, file} = path
     |> Xlsxir.multi_extract(0)
-    Xlsxir.get_list(file)
+
+    file
+    |> Xlsxir.get_list()
     |> Enum.map(&list_to_map/1)
     |> List.flatten()
   end
