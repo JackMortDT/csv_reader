@@ -1,0 +1,10 @@
+<%= form_for @conn, @action, fn f -> %>
+
+  <%= label f, :file, "Category"%>
+  <%= select f, :file, files_select_options(@options),
+      prompt: "Chose a category" %>
+
+  <div>
+    <%= submit "Descargar" %>
+  </div>
+<% end %>
