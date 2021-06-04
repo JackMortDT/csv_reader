@@ -1,28 +1,30 @@
 defmodule CsvReader.Logic.Reader do
 
   alias CsvReader.Repository.Payroll
+  alias CsvReader.Manager.ReaderManager
 
   @doc """
     Read file from a specific path and get all registers
 
     ## Example
 
-    iex> Reader.read_file("./files/2020EneroTest.xlsx")
+    iex> Reader.read_file("./files/2020EneroTest.xlsx", "2020EneroTest.xlsx")
 
-    [%Paysheet{}, %Paysheet{}, %Paysheet{}, %Paysheet{}]
+    :ok
   """
-  def read_file(path) do
+  def read_file(path, file_name) do
     {:ok, file} = path
     |> Xlsxir.multi_extract(0)
 
     file |> Xlsxir.get_list()
-    |> Enum.map(&list_to_map/1)
+    |> Enum.map(fn n -> Task.async(fn -> list_to_map(n) end) end)
+    |> Enum.map(fn n -> Task.await(n, 150_000) end)
     |> List.flatten()
     |> create_update_query()
-    |> add_query_to_file()
+    |> add_query_to_file(file_name)
   end
 
-  defp list_to_map(list) do
+  def list_to_map(list) do
     [year, payment_term, division, campus, program, modality,
     term_code, teacher, enrollment_employee, enrollment_teacher,
     company, payment_type, crn, course_code, course_number, course_desc,
@@ -72,11 +74,11 @@ defmodule CsvReader.Logic.Reader do
       net_amount: net_amount
     }
     |> get_paysheets()
+    |> get_max()
   end
 
   defp get_paysheets(params) do
     Payroll.get_paysheet_by_params(params)
-    |> get_max()
   end
 
   defp float_to_binary(number) when is_float(number) do
@@ -91,12 +93,12 @@ defmodule CsvReader.Logic.Reader do
 
   defp create_update_query(paysheet_list) do
     Enum.map(paysheet_list, fn paysheet ->
-      "UPDATE paysheet SET status = 'ACTIVE' WHERE ID = #{paysheet.id};"
+      "UPDATE paysheet SET status = 'ACTIVE' WHERE ID = #{paysheet.id}; \n"
     end)
   end
 
-  defp add_query_to_file(query) do
-    File.write("./files/updates.sql", "#{query}\n", [:append])
+  def add_query_to_file(query_list, file_name) do
+    File.write("./sql/#{file_name}.sql", "#{query_list}\n")
   end
 
   defp max_paysheet(paysheet_a, paysheet_b) do
