@@ -1,7 +1,6 @@
 defmodule CsvReader.Logic.Reader do
 
   alias CsvReader.Repository.Payroll
-  alias CsvReader.Manager.ReaderManager
 
   @doc """
     Read file from a specific path and get all registers
@@ -74,11 +73,11 @@ defmodule CsvReader.Logic.Reader do
       net_amount: net_amount
     }
     |> get_paysheets()
-    |> get_max()
   end
 
   defp get_paysheets(params) do
     Payroll.get_paysheet_by_params(params)
+    |> get_max()
   end
 
   defp float_to_binary(number) when is_float(number) do
@@ -101,7 +100,7 @@ defmodule CsvReader.Logic.Reader do
     File.write("./sql/#{file_name}.sql", "#{query_list}\n")
   end
 
-  defp max_paysheet(paysheet_a, paysheet_b) do
+  def max_paysheet(paysheet_a, paysheet_b) do
     cond do
       paysheet_a.updated_at > paysheet_b.updated_at -> paysheet_a
       paysheet_b.updated_at > paysheet_a.updated_at -> paysheet_b
