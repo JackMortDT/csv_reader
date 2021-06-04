@@ -14,7 +14,8 @@ defmodule CsvReader.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: CsvReader.PubSub},
       # Start the Endpoint (http/https)
-      CsvReaderWeb.Endpoint
+      CsvReaderWeb.Endpoint,
+      {CsvReader.Manager.Supervisor, []}
       # Start a worker by calling: CsvReader.Worker.start_link(arg)
       # {CsvReader.Worker, arg}
     ]
