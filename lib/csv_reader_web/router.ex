@@ -17,6 +17,8 @@ defmodule CsvReaderWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/scan", ScanController, :index
+    post "/export_file", ScanController, :export_file
   end
 
   # Other scopes may use custom stacks.
