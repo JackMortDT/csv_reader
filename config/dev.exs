@@ -1,17 +1,17 @@
 use Mix.Config
 
 # Configure your database
-config :faltas_suplencias, FaltasSuplencias.Repo,
-    username: "root",
-    password: "jack6496",
-    database: "faltas_suplencias_dev",
-    hostname: "localhost",
-    show_sensitive_data_on_connection_error: true,
-    pool_size: 10,
-    queue_target: 500_000,
-    queue_interval: 500_000,
-    timeout: 100_000,
-    handshake_timeout: 150_000
+config :csv_reader, CsvReader.Repo,
+  username: "root",
+  password: "jack6496",
+  database: "faltas_suplencias_dev",
+  hostname: "localhost",
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10,
+  queue_target: 500_000,
+  queue_interval: 500_000,
+  timeout: 100_000,
+  handshake_timeout: 150_000
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
