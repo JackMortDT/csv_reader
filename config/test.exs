@@ -6,10 +6,16 @@ use Mix.Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :csv_reader, CsvReader.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "csv_reader_test#{System.get_env("MIX_TEST_PARTITION")}",
+  username: "root",
+  password: "jack6496",
+  database: "faltas_suplencias_dev",
   hostname: "localhost",
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10,
+  queue_target: 500_000,
+  queue_interval: 500_000,
+  timeout: :infinity,
+  handshake_timeout: 150_000,
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

@@ -10,7 +10,7 @@ config :csv_reader, CsvReader.Repo,
   pool_size: 10,
   queue_target: 500_000,
   queue_interval: 500_000,
-  timeout: 100_000,
+  timeout: :infinity,
   handshake_timeout: 150_000
 
 # For development, we disable any cache and enable
@@ -60,6 +60,10 @@ config :csv_reader, CsvReaderWeb.Endpoint,
 
 # Watch static and templates for browser reloading.
 config :csv_reader, CsvReaderWeb.Endpoint,
+  http: [
+    port: 4000,
+    protocol_options: [idle_timeout: :infinity, max_connection_duration: :infinity, request_timeout: :infinity, inactivity_timeout: :infinity]
+  ],
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
