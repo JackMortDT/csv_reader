@@ -13,8 +13,7 @@ defmodule CsvReader.Logic.Reader do
     {:ok, file} = path
     |> Xlsxir.multi_extract(0)
 
-    file
-    |> Xlsxir.get_list()
+    file |> Xlsxir.get_list()
     |> Enum.map(&list_to_map/1)
     |> List.flatten()
   end
@@ -78,6 +77,11 @@ defmodule CsvReader.Logic.Reader do
   defp float_to_binary(number) when is_float(number) do
     :erlang.float_to_binary(number, [decimals: 0])
   end
-  defp float_to_binary(_), do: "0"
+  defp float_to_binary(number) when is_integer(number) do
+    Integer.to_string(number)
+  end
+  defp float_to_binary(string) do
+    string
+  end
 
 end
