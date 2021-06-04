@@ -20,7 +20,7 @@ defmodule CsvReader.MixProject do
   def application do
     [
       mod: {CsvReader.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :xlsxir]
     ]
   end
 
