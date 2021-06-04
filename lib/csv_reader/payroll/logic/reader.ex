@@ -75,7 +75,8 @@ defmodule CsvReader.Logic.Reader do
   end
 
   defp get_paysheets(params) do
-    Payroll.get_paysheet_by_params(params)    
+    Payroll.get_paysheet_by_params(params)
+    |> get_max()
   end
 
   defp float_to_binary(number) when is_float(number) do
@@ -95,6 +96,19 @@ defmodule CsvReader.Logic.Reader do
   end
 
   defp add_query_to_file(query) do
-    File.write("./files/updates.sql", "#{query} \n", [:append])
+    File.write("./files/updates.sql", "#{query}\n", [:append])
   end
+
+  defp max_paysheet(paysheet_a, paysheet_b) do
+    cond do
+      paysheet_a.updated_at > paysheet_b.updated_at -> paysheet_a
+      paysheet_b.updated_at > paysheet_a.updated_at -> paysheet_b
+      true -> paysheet_a
+    end
+  end
+
+  def get_max([]), do: []
+  def get_max([a]), do: a
+  def get_max([head | tail]), do: Enum.reduce(tail, head, &max_paysheet/2)
+
 end
