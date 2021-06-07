@@ -35,3 +35,5 @@ npm-debug.log
 
 .DS_Store
 /sql/
+/new_files/
+/files/
