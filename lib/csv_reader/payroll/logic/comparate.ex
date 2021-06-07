@@ -8,6 +8,13 @@ defmodule CsvReader.Logic.Comparate do
     ## Example
 
     iex> Comparate.comparate_files("./files/2020Enero.xlsx" ,"./new_files/2020Enero.xlsx")
+
+    %{
+      old_enrollments: [],
+      new_enrollments: [],
+      old_sum: 15_000,
+      new_sum: 15_000
+    }
   """
   def comparate_files(path, new_path) do
     enrollments = nrcs_of_file(path)
@@ -21,13 +28,13 @@ defmodule CsvReader.Logic.Comparate do
       new_sum: net_new_sum}
   end
 
-  def nrcs_of_file(path) do
+  defp nrcs_of_file(path) do
     path
     |> Reader.read()
     |> Enum.map(&get_nrcs/1)
   end
 
-  def net_hours_of_file(path) do
+  defp net_hours_of_file(path) do
     path
     |> Reader.read()
     |> Enum.map(&get_net_hours/1)

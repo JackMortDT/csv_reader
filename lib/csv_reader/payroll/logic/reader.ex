@@ -2,6 +2,15 @@ defmodule CsvReader.Logic.Reader do
 
   alias CsvReader.Repository.Payroll
 
+  @doc """
+    Read xlsx file and get a list of values
+
+    ## Example
+
+    iex> Reader.read("./files/2020Enero.xlsx")
+
+    [["", "", ""], ["", "", ""], ["", "", ""]]
+  """
   def read(path) do
     {:ok, file} = path
     |> Xlsxir.multi_extract(0)
