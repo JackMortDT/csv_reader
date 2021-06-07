@@ -2,6 +2,14 @@ defmodule CsvReader.Logic.Reader do
 
   alias CsvReader.Repository.Payroll
 
+  def read(path) do
+    {:ok, file} = path
+    |> Xlsxir.multi_extract(0)
+
+    file
+    |> Xlsxir.get_list()
+  end
+
   @doc """
     Read file from a specific path and get all registers
 
@@ -12,12 +20,10 @@ defmodule CsvReader.Logic.Reader do
     :ok
   """
   def read_file(path, file_name) do
-    {:ok, file} = path
-    |> Xlsxir.multi_extract(0)
-
-    file |> Xlsxir.get_list()
+    path
+    |> read()
     |> Enum.map(fn n -> Task.async(fn -> list_to_map(n) end) end)
-    |> Enum.map(fn n -> Task.await(n, 150_000) end)
+    |> Enum.map(fn n -> Task.await(n, :infinity) end)
     |> List.flatten()
     |> create_update_query()
     |> add_query_to_file(file_name)
