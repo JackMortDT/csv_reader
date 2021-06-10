@@ -8,7 +8,10 @@
 use Mix.Config
 
 config :csv_reader,
-  ecto_repos: [CsvReader.Repo]
+  ecto_repos: [
+    CsvReader.Repo,
+    CsvReader.OracleRepo
+  ]
 
 # Configures the endpoint
 config :csv_reader, CsvReaderWeb.Endpoint,

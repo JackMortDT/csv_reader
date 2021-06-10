@@ -46,6 +46,7 @@ defmodule CsvReader.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:myxql, ">= 0.0.0"},
+      {:jamdb_oracle, "~> 0.4.5"},
       {:xlsxir, "~> 1.6"},
       {:ex_doc, "~> 0.19", only: :dev}
     ]
