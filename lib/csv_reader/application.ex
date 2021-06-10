@@ -9,6 +9,7 @@ defmodule CsvReader.Application do
     children = [
       # Start the Ecto repository
       CsvReader.Repo,
+      CsvReader.OracleRepo,
       # Start the Telemetry supervisor
       CsvReaderWeb.Telemetry,
       # Start the PubSub system
