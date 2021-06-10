@@ -3,6 +3,39 @@ defmodule CsvReader.Logic.Reader do
   alias CsvReader.Repository.Payroll
 
   @doc """
+    Read sql file and get ids from that
+
+    ## Example
+
+    iex> Reader.get_ids_from_sql("./sql/2020Enero.xlsx.sql")
+
+    "1, 2, 3, 4, 5"
+  """
+  def get_ids_from_sql(path) do
+    File.read!(path)
+    |> String.replace(~r/[^\d]/, "")
+    |> String.codepoints()
+    |> Enum.chunk_every(6)
+    |> Enum.map(&Enum.join/1)
+  end
+
+  @doc """
+    Build new sql file with list of all ids
+
+    ## Example
+
+    iex> Reader.build_new_sql_update("./sql/2020Enero.xlsx.sql", "2020Enero")
+    :ok
+  """
+  def build_new_sql_update(path, file_name) do
+    ids = path |> get_ids_from_sql() |> Enum.join(",\n")
+    << y::8, e::8, a::8, r::8, _::binary >> = file_name
+    year = <<y>> <> <<e>> <> <<a>> <> <<r>>
+    query = "\n -- #{file_name} \n UPDATE paysheet SET status = 'ACTIVE' WHERE ID in (#{ids}); \n"
+    File.write!("./oracle/#{year}.sql", query, [:append])
+  end
+
+  @doc """
     Read xlsx file and get a list of values
 
     ## Example
