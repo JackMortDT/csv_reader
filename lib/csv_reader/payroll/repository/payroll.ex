@@ -4,6 +4,7 @@ defmodule CsvReader.Repository.Payroll do
   alias CsvReader.Repo
 
   alias CsvReader.Model.Paysheet
+  alias CsvReader.Model.BatchBlock
 
   def list_all_paysheets() do
     Repo.all(Paysheet)
@@ -13,6 +14,11 @@ defmodule CsvReader.Repository.Payroll do
     Paysheet
     |> Repo.get(id)
     |> Repo.preload(:batch_block)
+  end
+
+  def get_batch_block(id) do
+    BatchBlock
+    |> Repo.get(id)
   end
 
   def get_paysheet_by_params(
